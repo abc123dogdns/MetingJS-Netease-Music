@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网易云歌单播放器</title>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background-color: #1db954;
+      color: white;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+    .container {
+      max-width: 640px;
+      margin: auto;
+      padding: 1rem;
+    }
+    .input-area {
+      margin-bottom: 1rem;
+    }
+    input[type="text"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      width: 70%;
+      max-width: 400px;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      margin-left: 0.5rem;
+      background-color: #1db954;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background-color: #17a84b;
+    }
+    .category-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: white;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .card:hover {
+      background: #eee;
+    }
+    #playlist-list {
+      margin-top: 1rem;
+      text-align: left;
+    }
+    .playlist-item {
+      background: white;
+      padding: 0.6rem;
+      margin: 0.4rem 0;
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .playlist-item:hover {
+      background-color: #f0f0f0;
+    }
+    #aplayer-container {
+      margin: 2rem auto;
+      max-width: 640px;
+    }
+    footer {
+      font-size: 0.8rem;
+      color: gray;
+      margin: 2rem auto;
+      padding: 1rem;
+      max-width: 640px;
+    }
+    @media (max-width: 640px) {
+      .card, input[type="text"], button {
+        width: 100%;
+        margin: 0.2rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>网易云歌单播放器</header>
+  <div class="container">
+    <div class="input-area">
+      <input type="text" id="inputId" placeholder="输入网易云歌单ID，例如 3778678">
+      <button onclick="loadPlaylistFromInput()">播放歌单</button>
+    </div>
+
+    <div class="category-container" id="category-container"></div>
+    <div id="playlist-list"></div>
+    <div id="aplayer-container"></div>
+
+    <footer>
+      本项目仅用于学习交流目的，页面使用网易云音乐公开接口播放内容，所有歌曲版权归网易云音乐所有。禁止用于商业用途。
+    </footer>
+  </div>
+
+  <script>
+    const categories = [
+      {
+        title: "华语经典",
+        playlists: [
+          { id: "3778678", name: "华语经典50首" },
+          { id: "5219418350", name: "怀旧中文金曲" }
+        ]
+      },
+      {
+        title: "流行金曲",
+        playlists: [
+          { id: "3779629", name: "云音乐热歌榜" },
+          { id: "991319590", name: "2020年热歌" }
+        ]
+      },
+      {
+        title: "经典英文",
+        playlists: [
+          { id: "19723756", name: "欧美热歌榜" },
+          { id: "2884035", name: "英文经典" }
+        ]
+      },
+      {
+        title: "网络热门",
+        playlists: [
+          { id: "2884035", name: "网络最热单曲" }
+        ]
+      },
+      {
+        title: "官方推荐",
+        playlists: [
+          { id: "440103454", name: "官方推荐精选" },
+          { id: "2196260778", name: "编辑精选推荐" }
+        ]
+      }
+    ];
+
+    function renderCategories() {
+      const container = document.getElementById("category-container");
+      container.innerHTML = "";
+      categories.forEach((cat, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = cat.title;
+        card.onclick = () => renderPlaylistList(index);
+        container.appendChild(card);
+      });
+    }
+
+    function renderPlaylistList(index) {
+      const list = categories[index].playlists;
+      const container = document.getElementById("playlist-list");
+      container.innerHTML = list.map(
+        item => `<div class='playlist-item' onclick='loadPlaylist("${item.id}")'>${item.name}</div>`
+      ).join("");
+    }
+
+    function loadPlaylist(id) {
+      const player = document.getElementById("aplayer-container");
+      player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>`;
+    }
+
+    function loadPlaylistFromInput() {
+      const id = document.getElementById("inputId").value.trim();
+      if (id) loadPlaylist(id);
+    }
+
+    // 默认加载一次
+    window.onload = function() {
+      loadPlaylist("2811031169");
+      renderCategories();
+    }
+  </script>
+</body>
+</html>
