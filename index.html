@@ -15,23 +15,6 @@
       padding: 0;
       text-align: center;
     }
-    header {<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>网易云歌单浏览与播放</title>
-  <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" />
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
     header {
       background: #1db954;
       color: white;
@@ -199,100 +182,6 @@
 
     renderCategories();
     loadPlaylist("2811031169");
-  </script>
-</body>
-</html>
-
-      background: #1db954;
-      color: white;
-      padding: 1rem;
-      font-size: 1.4rem;
-    }
-    .category-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 1rem;
-    }
-    .card {
-      background: white;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-      margin: 1rem;
-      border-radius: 8px;
-      width: 160px;
-      cursor: pointer;
-      overflow: hidden;
-      transition: 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-    }
-    .card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-    }
-    .card-title {
-      padding: 0.5rem;
-    }
-    #aplayer-container {
-      max-width: 640px;
-      margin: 2rem auto;
-    }
-    footer {
-      padding: 1rem;
-      font-size: 0.8rem;
-      color: gray;
-    }
-  </style>
-</head>
-<body>
-  <header>网易云歌单分类浏览与播放</header>
-  <div class="category-container" id="category-container"></div>
-  <div id="aplayer-container"></div>
-  <footer>
-    本项目仅使用网易云音乐官方公开接口进行播放，播放内容归网易云所有，页面仅用于学习交流目的，禁止用于任何商业用途。
-  </footer>
-
-  <script>
-    const categories = [
-      { id: "3778678", title: "华语经典", cover: "https://p2.music.126.net/-akNSb8u1CAX7E_W5vYncg==/109951163225128044.jpg" },
-      { id: "3779629", title: "流行金曲", cover: "https://p2.music.126.net/Bs0Z4kJ_1Q_5LRBd3VE1fg==/109951163225117890.jpg" },
-      { id: "19723756", title: "经典英文歌曲", cover: "https://p2.music.126.net/Wm_dlpAALWy3ocS3qknDIg==/109951163225132017.jpg" },
-      { id: "2884035", title: "网络热门", cover: "https://p2.music.126.net/nPMb1lYkYnmXqjj1QpYkng==/109951163225109060.jpg" },
-      { id: "440103454", title: "官方推荐", cover: "https://p2.music.126.net/ruJ45HOQF1XHIC-1ep3GEw==/109951163225124801.jpg" }
-    ];
-
-    const renderCategories = () => {
-      const container = document.getElementById("category-container");
-      categories.forEach((cat) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <img src="${cat.cover}" alt="${cat.title}" onerror="this.src='https://via.placeholder.com/160x120?text=No+Image'">
-          <div class="card-title">${cat.title}</div>
-        `;
-        card.onclick = () => loadPlaylist(cat.id);
-        container.appendChild(card);
-      });
-    };
-
-    const loadPlaylist = (playlistId) => {
-      const container = document.getElementById("aplayer-container");
-      container.innerHTML = `
-        <meting-js
-          server="netease"
-          type="playlist"
-          id="${playlistId}"
-          fixed="false"
-          autoplay="false"
-          theme="#1db954"
-        ></meting-js>
-      `;
-    };
-
-    renderCategories();
-    loadPlaylist("2811031169"); // 默认加载的歌单
   </script>
 </body>
 </html>
