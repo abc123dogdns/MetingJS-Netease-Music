@@ -1,27 +1,183 @@
-<label>输入网易云歌单ID：</label>
-<input type="text" id="playlistIdInput" value="3778678" />
-<button onclick="changePlaylist()">加载歌单</button>
-
-<meting-js
-  id="3778678"
-  server="netease"
-  type="playlist"
-  list-folded="false"
-  fixed="false"
-  theme="#b7daff"
-  preload="auto"
-  loop="all"
-  order="list"
-></meting-js>
-
-<script>
-  function changePlaylist() {
-    const input = document.getElementById('playlistIdInput');
-    const id = input.value.trim();
-    if (!id) {
-      alert('请输入有效歌单ID');
-      return;
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>网易云歌单浏览与播放示例</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" />
+  <style>
+    body {
+      font-family: "微软雅黑", Arial, sans-serif;
+      margin: 0; padding: 0; background: #f0f2f5;
     }
-    document.querySelector('meting-js').id = id;
-  }
-</script>
+    header {
+      background: #1db954;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    #playlist-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem;
+      justify-content: center;
+    }
+    .playlist-item {
+      cursor: pointer;
+      width: 160px;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
+      border-radius: 8px;
+      background: white;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+    .playlist-item:hover {
+      box-shadow: 0 6px 12px rgb(0 0 0 / 0.3);
+    }
+    .playlist-item img {
+      width: 100%;
+      display: block;
+      border-bottom: 1px solid #ddd;
+    }
+    .playlist-title {
+      padding: 0.5rem;
+      font-size: 1rem;
+      text-align: center;
+      color: #333;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    #search-area {
+      text-align: center;
+      margin: 1rem 0 2rem 0;
+    }
+    #search-area input[type="text"] {
+      width: 200px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    #search-area input[type="text"]:focus {
+      border-color: #1db954;
+    }
+    #search-area button {
+      padding: 0.4rem 1rem;
+      margin-left: 0.5rem;
+      background: #1db954;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #search-area button:hover {
+      background: #17a44d;
+    }
+    #aplayer-container {
+      max-width: 640px;
+      margin: 0 auto 2rem auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>网易云歌单浏览与播放示例</header>
+
+  <div id="search-area">
+    <input type="text" id="playlistIdInput" placeholder="输入网易云歌单ID，例如 3778678" />
+    <button onclick="loadPlaylistFromInput()">加载歌单</button>
+  </div>
+
+  <div id="playlist-list">
+    <!-- 热门歌单列表，由JS生成 -->
+  </div>
+
+  <div id="aplayer-container">
+    <meting-js
+      id="3778678"
+      server="netease"
+      type="playlist"
+      list-folded="false"
+      fixed="false"
+      theme="#1db954"
+      preload="auto"
+      loop="all"
+      order="list"
+    ></meting-js>
+  </div>
+
+  <script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+  <script>
+    const popularPlaylists = [
+      {
+        id: "3778678",
+        name: "华语经典",
+        cover: "https://p1.music.126.net/qmW5yJkXeWh_JRwl4j6BOw==/109951163699432036.jpg"
+      },
+      {
+        id: "19723756",
+        name: "流行金曲",
+        cover: "https://p1.music.126.net/3ODNppHKcRc0I8DK0fxzIg==/109951165004944439.jpg"
+      },
+      {
+        id: "3779629",
+        name: "经典英文歌曲",
+        cover: "https://p1.music.126.net/LZlY6L5WyQ5v0J1z1pIxtQ==/109951163483568313.jpg"
+      },
+      {
+        id: "991319590",
+        name: "网络热门",
+        cover: "https://p1.music.126.net/jK_hy67y_1g6hp6-37BjqA==/109951165528521276.jpg"
+      }
+    ];
+
+    const playlistListEl = document.getElementById("playlist-list");
+    const metingEl = document.querySelector("meting-js");
+
+    // 渲染热门歌单
+    function renderPlaylists() {
+      popularPlaylists.forEach(pl => {
+        const div = document.createElement("div");
+        div.className = "playlist-item";
+        div.title = pl.name;
+        div.innerHTML = `
+          <img src="${pl.cover}" alt="${pl.name}" />
+          <div class="playlist-title">${pl.name}</div>
+        `;
+        div.onclick = () => {
+          metingEl.id = pl.id;
+          // 页面滚动到播放器
+          metingEl.scrollIntoView({ behavior: "smooth" });
+        };
+        playlistListEl.appendChild(div);
+      });
+    }
+
+    // 加载输入框歌单
+    function loadPlaylistFromInput() {
+      const id = document.getElementById("playlistIdInput").value.trim();
+      if (!id) {
+        alert("请输入有效歌单ID");
+        return;
+      }
+      metingEl.id = id;
+      metingEl.scrollIntoView({ behavior: "smooth" });
+    }
+
+    renderPlaylists();
+  </script>
+</body>
+</html>
