@@ -1,30 +1,27 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <title>简单 MetingJS 歌单示例</title>
-  <link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" />
-</head>
-<body>
-  <div id="aplayer"></div>
+<label>输入网易云歌单ID：</label>
+<input type="text" id="playlistIdInput" value="3778678" />
+<button onclick="changePlaylist()">加载歌单</button>
 
-  <script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<meting-js
+  id="3778678"
+  server="netease"
+  type="playlist"
+  list-folded="false"
+  fixed="false"
+  theme="#b7daff"
+  preload="auto"
+  loop="all"
+  order="list"
+></meting-js>
 
-  <meting-js
-    server="netease"
-    type="playlist"
-    id="3778678"
-    fixed="true"
-    theme="#b7daff"
-    loop="all"
-    order="list"
-    preload="auto"
-    list-folded="false"
-  ></meting-js>
-
-  <script>
-    // 这个是自动绑定 aplayer，metingjs 会帮你处理
-  </script>
-</body>
-</html>
+<script>
+  function changePlaylist() {
+    const input = document.getElementById('playlistIdInput');
+    const id = input.value.trim();
+    if (!id) {
+      alert('请输入有效歌单ID');
+      return;
+    }
+    document.querySelector('meting-js').id = id;
+  }
+</script>
