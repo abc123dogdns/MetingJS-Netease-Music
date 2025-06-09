@@ -8,7 +8,9 @@
   <style>
     body {
       font-family: "微软雅黑", Arial, sans-serif;
-      margin: 0; padding: 0; background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
     }
     header {
       background: #1db954;
@@ -33,19 +35,21 @@
       background: white;
       overflow: hidden;
       transition: box-shadow 0.3s ease;
+      text-align: center;
     }
     .playlist-item:hover {
       box-shadow: 0 6px 12px rgb(0 0 0 / 0.3);
     }
     .playlist-item img {
       width: 100%;
+      height: 100px;
+      object-fit: cover;
       display: block;
       border-bottom: 1px solid #ddd;
     }
     .playlist-title {
       padding: 0.5rem;
       font-size: 1rem;
-      text-align: center;
       color: #333;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -99,29 +103,15 @@
     <button onclick="loadPlaylistFromInput()">加载歌单</button>
   </div>
 
-  <div id="playlist-list">
-    <!-- 热门歌单列表，由JS生成 -->
-  </div>
+  <div id="playlist-list"></div>
 
-  <div id="aplayer-container">
-    <meting-js
-      id="3778678"
-      server="netease"
-      type="playlist"
-      list-folded="false"
-      fixed="false"
-      theme="#1db954"
-      preload="auto"
-      loop="all"
-      order="list"
-    ></meting-js>
-  </div>
+  <div id="aplayer-container"></div>
 
   <script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
   <script>
-    const popularPlaylists = [
+    const playlists = [
       {
         id: "3778678",
         name: "华语经典",
@@ -144,40 +134,53 @@
       }
     ];
 
-    const playlistListEl = document.getElementById("playlist-list");
-    const metingEl = document.querySelector("meting-js");
-
-    // 渲染热门歌单
     function renderPlaylists() {
-      popularPlaylists.forEach(pl => {
+      const container = document.getElementById("playlist-list");
+      playlists.forEach(pl => {
         const div = document.createElement("div");
         div.className = "playlist-item";
-        div.title = pl.name;
         div.innerHTML = `
           <img src="${pl.cover}" alt="${pl.name}" />
           <div class="playlist-title">${pl.name}</div>
         `;
-        div.onclick = () => {
-          metingEl.id = pl.id;
-          // 页面滚动到播放器
-          metingEl.scrollIntoView({ behavior: "smooth" });
-        };
-        playlistListEl.appendChild(div);
+        div.onclick = () => loadPlaylist(pl.id);
+        container.appendChild(div);
       });
     }
 
-    // 加载输入框歌单
+    function loadPlaylist(id) {
+      const container = document.getElementById("aplayer-container");
+      container.innerHTML = ""; // 清除旧播放器
+
+      const newEl = document.createElement("meting-js");
+      newEl.setAttribute("server", "netease");
+      newEl.setAttribute("type", "playlist");
+      newEl.setAttribute("id", id);
+      newEl.setAttribute("list-folded", "false");
+      newEl.setAttribute("fixed", "false");
+      newEl.setAttribute("theme", "#1db954");
+      newEl.setAttribute("preload", "auto");
+      newEl.setAttribute("loop", "all");
+      newEl.setAttribute("order", "list");
+
+      container.appendChild(newEl);
+      newEl.scrollIntoView({ behavior: "smooth" });
+    }
+
     function loadPlaylistFromInput() {
       const id = document.getElementById("playlistIdInput").value.trim();
       if (!id) {
-        alert("请输入有效歌单ID");
+        alert("请输入有效的歌单ID");
         return;
       }
-      metingEl.id = id;
-      metingEl.scrollIntoView({ behavior: "smooth" });
+      loadPlaylist(id);
     }
 
-    renderPlaylists();
+    // 默认加载第一个歌单
+    window.onload = () => {
+      renderPlaylists();
+      loadPlaylist("3778678");
+    };
   </script>
 </body>
 </html>
