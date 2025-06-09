@@ -15,7 +15,194 @@
       padding: 0;
       text-align: center;
     }
+    header {<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网易云歌单浏览与播放</title>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" />
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
     header {
+      background: #1db954;
+      color: white;
+      padding: 1rem;
+      font-size: 1.4rem;
+    }
+    .category-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .card {
+      background: white;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      margin: 1rem;
+      border-radius: 8px;
+      width: 160px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+    .card-title {
+      padding: 0.5rem;
+    }
+    #playlist-list {
+      max-width: 640px;
+      margin: 1rem auto;
+      text-align: left;
+    }
+    .playlist-item {
+      background: white;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+      cursor: pointer;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    .playlist-item:hover {
+      background: #f0f0f0;
+    }
+    #aplayer-container {
+      max-width: 640px;
+      margin: 2rem auto;
+    }
+    footer {
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <header>网易云歌单分类浏览与播放</header>
+
+  <div style="margin: 1rem">
+    <input type="text" id="inputId" placeholder="输入网易云歌单ID，例如 3778678">
+    <button onclick="loadPlaylistFromInput()">播放歌单</button>
+  </div>
+
+  <div class="category-container" id="category-container"></div>
+  <div id="playlist-list"></div>
+  <div id="aplayer-container"></div>
+
+  <footer>
+    本项目仅使用网易云音乐官方公开接口进行播放，播放内容归网易云所有，页面仅用于学习交流目的，禁止用于任何商业用途。
+  </footer>
+
+  <script>
+    const categories = [
+      {
+        title: "华语经典",
+        playlists: [
+          { id: "3778678", name: "华语经典50首" },
+          { id: "5219418350", name: "怀旧中文金曲" }
+        ],
+        cover: "https://p2.music.126.net/-akNSb8u1CAX7E_W5vYncg==/109951163225128044.jpg"
+      },
+      {
+        title: "流行金曲",
+        playlists: [
+          { id: "3779629", name: "云音乐热歌榜" },
+          { id: "991319590", name: "2020年热歌" }
+        ],
+        cover: "https://p2.music.126.net/Bs0Z4kJ_1Q_5LRBd3VE1fg==/109951163225117890.jpg"
+      },
+      {
+        title: "经典英文",
+        playlists: [
+          { id: "19723756", name: "云音乐欧美热歌榜" },
+          { id: "2884035", name: "英文经典" }
+        ],
+        cover: "https://p2.music.126.net/Wm_dlpAALWy3ocS3qknDIg==/109951163225132017.jpg"
+      },
+      {
+        title: "网络热门",
+        playlists: [
+          { id: "2884035", name: "网络最热单曲" }
+        ],
+        cover: "https://p2.music.126.net/nPMb1lYkYnmXqjj1QpYkng==/109951163225109060.jpg"
+      },
+      {
+        title: "官方推荐",
+        playlists: [
+          { id: "440103454", name: "官方推荐精选" },
+          { id: "2196260778", name: "编辑精选推荐" }
+        ],
+        cover: "https://p2.music.126.net/ruJ45HOQF1XHIC-1ep3GEw==/109951163225124801.jpg"
+      }
+    ];
+
+    function renderCategories() {
+      const container = document.getElementById("category-container");
+      container.innerHTML = "";
+      categories.forEach((cat, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${cat.cover}" alt="${cat.title}" onerror="this.src='https://via.placeholder.com/160x120?text=No+Image'">
+          <div class="card-title">${cat.title}</div>
+        `;
+        card.onclick = () => renderPlaylistList(index);
+        container.appendChild(card);
+      });
+    }
+
+    function renderPlaylistList(categoryIndex) {
+      const container = document.getElementById("playlist-list");
+      const list = categories[categoryIndex].playlists;
+      container.innerHTML = list
+        .map(
+          (pl) => `<div class="playlist-item" onclick="loadPlaylist('${pl.id}')">${pl.name}</div>`
+        )
+        .join("");
+    }
+
+    function loadPlaylist(id) {
+      const container = document.getElementById("aplayer-container");
+      container.innerHTML = `
+        <meting-js
+          server="netease"
+          type="playlist"
+          id="${id}"
+          fixed="false"
+          autoplay="false"
+          theme="#1db954"
+        ></meting-js>
+      `;
+    }
+
+    function loadPlaylistFromInput() {
+      const input = document.getElementById("inputId").value.trim();
+      if (input) {
+        loadPlaylist(input);
+      }
+    }
+
+    renderCategories();
+    loadPlaylist("2811031169");
+  </script>
+</body>
+</html>
+
       background: #1db954;
       color: white;
       padding: 1rem;
