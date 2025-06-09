@@ -2,29 +2,15 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <title>网易云歌单分类播放</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>网易云歌单分类浏览与播放</title>
   <link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
       margin: 0;
       padding: 0;
-      background: #f5f5f5;
-    }
-    header {<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <title>网易云歌单分类播放</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
     }
     header {
       background: #1db954;
@@ -32,33 +18,6 @@
       padding: 1rem;
       text-align: center;
       font-size: 1.4rem;
-    }
-    #category-list, #playlist-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem;
-      justify-content: center;
-    }
-    .card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      width: 160px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .card img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-    .card .title {
-      padding: 0.5rem;
-      font-size: 0.95rem;
-      color: #333;
     }
     #search-area {
       text-align: center;
@@ -80,6 +39,33 @@
       font-size: 1rem;
       cursor: pointer;
       margin-left: 0.5rem;
+    }
+    #category-list, #playlist-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      width: 160px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .card .title {
+      padding: 0.5rem;
+      font-size: 0.95rem;
+      color: #333;
     }
     #aplayer-container {
       max-width: 640px;
@@ -155,7 +141,7 @@
         const div = document.createElement("div");
         div.className = "card";
         div.innerHTML = `
-          <img src="${cat.cover}" onerror="this.src='https://via.placeholder.com/160x100?text=Image+Error'" />
+          <img src="${cat.cover}" onerror="this.src='https://via.placeholder.com/160x100?text=No+Image'" />
           <div class="title">${cat.name}</div>
         `;
         div.onclick = () => renderPlaylists(cat.playlists);
@@ -207,170 +193,6 @@
       } catch (e) {
         alert("拉取失败，请检查 UID 是否正确");
       }
-    }
-
-    renderCategories();
-  </script>
-</body>
-</html>
-
-      background: #1db954;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.4rem;
-    }
-    #category-list, #playlist-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding: 1rem;
-      justify-content: center;
-    }
-    .card {
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      width: 160px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .card img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-    .card .title {
-      padding: 0.5rem;
-      font-size: 0.95rem;
-      color: #333;
-    }
-    #search-area {
-      text-align: center;
-      margin: 1rem 0;
-    }
-    input[type="text"] {
-      padding: 0.4rem;
-      font-size: 1rem;
-      width: 220px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      background: #1db954;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-left: 0.5rem;
-    }
-    #aplayer-container {
-      max-width: 640px;
-      margin: 1rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-  </style>
-</head>
-<body>
-  <header>网易云歌单分类浏览与播放</header>
-
-  <div id="search-area">
-    <input type="text" id="playlistIdInput" placeholder="输入歌单ID，例如 3778678">
-    <button onclick="loadPlaylistFromInput()">播放歌单</button>
-  </div>
-
-  <div id="category-list"></div>
-  <div id="playlist-list"></div>
-  <div id="aplayer-container"></div>
-
-  <script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
-  <script>
-    const categories = [
-      {
-        name: "华语经典",
-        playlists: [
-          { id: "3778678", title: "云音乐热歌榜" },
-          { id: "71385702", title: "华语轻音乐" }
-        ],
-        cover: "https://cdn.jsdelivr.net/gh/metowolf/static@master/cover/netease.jpg"
-      },
-      {
-        name: "流行金曲",
-        playlists: [
-          { id: "19723756", title: "云音乐飙升榜" },
-          { id: "2884035", title: "流行指数榜" }
-        ],
-        cover: "https://cdn.jsdelivr.net/gh/metowolf/static@master/cover/netease2.jpg"
-      },
-      {
-        name: "经典英文",
-        playlists: [
-          { id: "3779629", title: "云音乐新歌榜" },
-          { id: "991319590", title: "经典英文精选" }
-        ],
-        cover: "https://cdn.jsdelivr.net/gh/metowolf/static@master/cover/netease3.jpg"
-      },
-      {
-        name: "网络热门",
-        playlists: [
-          { id: "2250011882", title: "抖音热门歌曲" },
-          { id: "60198", title: "网络金曲榜" }
-        ],
-        cover: "https://cdn.jsdelivr.net/gh/metowolf/static@master/cover/netease4.jpg"
-      }
-    ];
-
-    const catContainer = document.getElementById("category-list");
-    const plContainer = document.getElementById("playlist-list");
-
-    function renderCategories() {
-      categories.forEach(cat => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          <img src="${cat.cover}" onerror="this.src='https://via.placeholder.com/160x100?text=Image+Error'" />
-          <div class="title">${cat.name}</div>
-        `;
-        div.onclick = () => renderPlaylists(cat.playlists);
-        catContainer.appendChild(div);
-      });
-    }
-
-    function renderPlaylists(playlists) {
-      plContainer.innerHTML = "";
-      playlists.forEach(pl => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `<div class="title">${pl.title}</div>`;
-        div.onclick = () => loadPlaylist(pl.id);
-        plContainer.appendChild(div);
-      });
-    }
-
-    function loadPlaylist(id) {
-      const container = document.getElementById("aplayer-container");
-      container.innerHTML = "";
-      const newEl = document.createElement("meting-js");
-      newEl.setAttribute("server", "netease");
-      newEl.setAttribute("type", "playlist");
-      newEl.setAttribute("id", id);
-      newEl.setAttribute("list-folded", "false");
-      newEl.setAttribute("fixed", "false");
-      newEl.setAttribute("theme", "#1db954");
-      container.appendChild(newEl);
-    }
-
-    function loadPlaylistFromInput() {
-      const id = document.getElementById("playlistIdInput").value.trim();
-      if (id) loadPlaylist(id);
     }
 
     renderCategories();
