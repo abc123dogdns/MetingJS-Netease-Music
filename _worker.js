@@ -42,7 +42,7 @@ async function handleVP(request) {
 
   let 哎呀呀这是我的VL密钥 = "d342d11e-d424-4583-b36e-524ab1f0afa4"; //这是真实的UUID，通用订阅会进行验证，建议修改为自己的规范化UUID
   let 启用反代功能 = true //选择是否启用反代功能【总开关】，false，true，现在你可以自由的选择是否启用反代功能了
-  let 反代IP = '72.13.122.137' //反代IP或域名，反代IP端口一般情况下不用填写，如果你非要用非标反代的话，可以填'ts.hpc.tw:443'这样
+  let 反代IP = '72.13.122.137' //代码改过后这里不起作用了，直接在下面代码中改，反代IP或域名，反代IP端口一般情况下不用填写，如果你非要用非标反代的话，可以填'ts.hpc.tw:443'这样
 
   const url = new URL(request.url);
 
@@ -64,7 +64,7 @@ async function handleVP(request) {
   }
 
   console.log("最终反代IP:", 最终反代IP);
-  反代IP = 最终反代IP || "72.13.122.137";
+  反代IP = 最终反代IP || "192.9.250.241";
 
 
 
