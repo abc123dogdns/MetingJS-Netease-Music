@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>简单 MetingJS 歌单示例</title>
+  <link rel="stylesheet" href="https://unpkg.com/aplayer/dist/APlayer.min.css" />
+</head>
+<body>
+  <div id="aplayer"></div>
+
+  <script src="https://unpkg.com/aplayer/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+  <meting-js
+    server="netease"
+    type="playlist"
+    id="3778678"
+    fixed="true"
+    theme="#b7daff"
+    loop="all"
+    order="list"
+    preload="auto"
+    list-folded="false"
+  ></meting-js>
+
+  <script>
+    // 这个是自动绑定 aplayer，metingjs 会帮你处理
+  </script>
+</body>
+</html>
