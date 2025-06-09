@@ -10,7 +10,7 @@
 </p>
 
 ## Requirement
-
+项目FORK自https://github.com/metowolf/MetingJS，感谢
 https://github.com/MoePlayer/APlayer
 
 |Version|API Status|APlayer|
