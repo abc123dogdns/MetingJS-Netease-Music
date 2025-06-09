@@ -119,6 +119,13 @@
 
   <script>
     const categories = [
+     {
+        title: "当前热歌",
+        playlists: [
+          { id: "3779629", name: "新歌榜" },
+          { id: "19723756", name: "飙升榜" }
+        ]
+      }
       {
         title: "华语经典",
         playlists: [
@@ -145,14 +152,8 @@
         playlists: [
           { id: "2884035", name: "网络最热单曲" }
         ]
-      },
-      {
-        title: "官方推荐",
-        playlists: [
-          { id: "440103454", name: "官方推荐精选" },
-          { id: "2196260778", name: "编辑精选推荐" }
-        ]
       }
+
     ];
 
     function renderCategories() {
@@ -187,7 +188,7 @@
 
     // 默认加载一次
     window.onload = function() {
-      loadPlaylist("2811031169");
+      loadPlaylist("3778678");
       renderCategories();
     }
   </script>
