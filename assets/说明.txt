@@ -1,0 +1,4 @@
+资源	说明	推荐文件名
+APlayer JS	音乐播放器主代码	aplayer.min.js
+APlayer CSS	播放器的样式表	aplayer.min.css
+MetingJS	网易云接口插件	meting.min.js
