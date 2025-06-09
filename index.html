@@ -26,27 +26,22 @@
       flex-wrap: wrap;
       justify-content: center;
       padding: 1rem;
+      max-width: 640px;
+      margin: 0 auto;
     }
     .card {
       background: white;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-      margin: 1rem;
+      margin: 0.5rem;
       border-radius: 8px;
-      width: 160px;
+      padding: 0.8rem 1.2rem;
+      font-weight: bold;
+      font-size: 1rem;
       cursor: pointer;
-      overflow: hidden;
       transition: 0.3s;
     }
     .card:hover {
-      transform: scale(1.05);
-    }
-    .card img {
-      width: 100%;
-      height: 120px;
-      object-fit: cover;
-    }
-    .card-title {
-      padding: 0.5rem;
+      background: #f0f0f0;
     }
     #playlist-list {
       max-width: 640px;
@@ -73,6 +68,15 @@
       font-size: 0.8rem;
       color: gray;
     }
+    @media screen and (max-width: 640px) {
+      .category-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 90%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -98,39 +102,34 @@
         playlists: [
           { id: "3778678", name: "华语经典50首" },
           { id: "5219418350", name: "怀旧中文金曲" }
-        ],
-        cover: "https://p2.music.126.net/-akNSb8u1CAX7E_W5vYncg==/109951163225128044.jpg"
+        ]
       },
       {
         title: "流行金曲",
         playlists: [
           { id: "3779629", name: "云音乐热歌榜" },
           { id: "991319590", name: "2020年热歌" }
-        ],
-        cover: "https://p2.music.126.net/Bs0Z4kJ_1Q_5LRBd3VE1fg==/109951163225117890.jpg"
+        ]
       },
       {
         title: "经典英文",
         playlists: [
           { id: "19723756", name: "云音乐欧美热歌榜" },
           { id: "2884035", name: "英文经典" }
-        ],
-        cover: "https://p2.music.126.net/Wm_dlpAALWy3ocS3qknDIg==/109951163225132017.jpg"
+        ]
       },
       {
         title: "网络热门",
         playlists: [
           { id: "2884035", name: "网络最热单曲" }
-        ],
-        cover: "https://p2.music.126.net/nPMb1lYkYnmXqjj1QpYkng==/109951163225109060.jpg"
+        ]
       },
       {
         title: "官方推荐",
         playlists: [
           { id: "440103454", name: "官方推荐精选" },
           { id: "2196260778", name: "编辑精选推荐" }
-        ],
-        cover: "https://p2.music.126.net/ruJ45HOQF1XHIC-1ep3GEw==/109951163225124801.jpg"
+        ]
       }
     ];
 
@@ -140,10 +139,7 @@
       categories.forEach((cat, index) => {
         const card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = `
-          <img src="${cat.cover}" alt="${cat.title}" onerror="this.src='https://via.placeholder.com/160x120?text=No+Image'">
-          <div class="card-title">${cat.title}</div>
-        `;
+        card.textContent = cat.title;
         card.onclick = () => renderPlaylistList(index);
         container.appendChild(card);
       });
@@ -151,37 +147,4 @@
 
     function renderPlaylistList(categoryIndex) {
       const container = document.getElementById("playlist-list");
-      const list = categories[categoryIndex].playlists;
-      container.innerHTML = list
-        .map(
-          (pl) => `<div class="playlist-item" onclick="loadPlaylist('${pl.id}')">${pl.name}</div>`
-        )
-        .join("");
-    }
-
-    function loadPlaylist(id) {
-      const container = document.getElementById("aplayer-container");
-      container.innerHTML = `
-        <meting-js
-          server="netease"
-          type="playlist"
-          id="${id}"
-          fixed="false"
-          autoplay="false"
-          theme="#1db954"
-        ></meting-js>
-      `;
-    }
-
-    function loadPlaylistFromInput() {
-      const input = document.getElementById("inputId").value.trim();
-      if (input) {
-        loadPlaylist(input);
-      }
-    }
-
-    renderCategories();
-    loadPlaylist("2811031169");
-  </script>
-</body>
-</html>
+      const list = categ
