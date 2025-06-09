@@ -83,6 +83,7 @@
     }
     #aplayer-container {
       margin: 2rem auto;
+      max-width: 640px;
     }
     footer {
       font-size: 0.8rem;
@@ -115,16 +116,6 @@
       本项目仅用于学习交流目的，页面使用网易云音乐公开接口播放内容，所有歌曲版权归网易云音乐所有。禁止用于商业用途。
     </footer>
   </div>
-
-  <!-- Meting 会自动渲染 APlayer -->
-  <meting-js
-    server="netease"
-    type="playlist"
-    id="2811031169"
-    fixed="false"
-    autoplay="false"
-    theme="#1db954">
-  </meting-js>
 
   <script>
     const categories = [
@@ -194,7 +185,11 @@
       if (id) loadPlaylist(id);
     }
 
-    renderCategories();
+    // 默认加载一次
+    window.onload = function() {
+      loadPlaylist("2811031169");
+      renderCategories();
+    }
   </script>
 </body>
 </html>
