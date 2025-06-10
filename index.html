@@ -165,7 +165,6 @@
         card.onclick = () => renderPlaylistList(index);
         container.appendChild(card);
       });
-      console.log("Categories rendered");  // 调试信息
     }
 
     function renderPlaylistList(index) {
@@ -174,13 +173,15 @@
       container.innerHTML = list.map(
         item => `<div class='playlist-item' onclick='loadPlaylist("${item.id}")'>${item.name}</div>`
       ).join("");
-      console.log("Playlist list rendered for category", index);  // 调试信息
     }
 
     function loadPlaylist(id) {
-      console.log("Loading playlist:", id);  // 调试信息
       const player = document.getElementById("aplayer-container");
-      player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>`;
+
+      // 修改为通过 Cloudflare Worker 中转
+      const workerUrl = `https://你的-worker-url/你的路径/`;
+
+      player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954" api="${https://music-proxy-netease.abc123abc123.workers.dev}"></meting-js>`;
     }
 
     function loadPlaylistFromInput() {
@@ -190,8 +191,8 @@
 
     // 默认加载一次
     window.onload = function() {
-      renderCategories();  // 确保渲染分类
-      loadPlaylist("3778678");  // 默认加载一个歌单
+      loadPlaylist("3778678");
+      renderCategories();
     }
   </script>
 </body>
