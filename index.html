@@ -171,13 +171,13 @@
       const list = categories[index].playlists;
       const container = document.getElementById("playlist-list");
       container.innerHTML = list.map(
-        item => <div class='playlist-item' onclick='loadPlaylist("${item.id}")'>${item.name}</div>
+        item => `<div class='playlist-item' onclick='loadPlaylist("${item.id}")'>${item.name}</div>`
       ).join("");
     }
 
     function loadPlaylist(id) {
       const player = document.getElementById("aplayer-container");
-      player.innerHTML = <meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>;
+      player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>`;
     }
 
     function loadPlaylistFromInput() {
@@ -187,7 +187,7 @@
 
     // 默认加载一次
     window.onload = function() {
-      loadPlaylist("3778678");
+      loadPlaylist("2811031169");
       renderCategories();
     }
   </script>
