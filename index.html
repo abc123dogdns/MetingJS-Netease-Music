@@ -177,7 +177,8 @@
 
     function loadPlaylist(id) {
       const player = document.getElementById("aplayer-container");
-      player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>`;
+      // 修改为指向 Cloudflare Worker
+      player.innerHTML = `<meting-js server="https://music-proxy-netease.abc123abc123.workers.dev" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>`;
     }
 
     function loadPlaylistFromInput() {
