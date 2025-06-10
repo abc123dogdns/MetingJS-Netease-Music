@@ -176,13 +176,17 @@
     }
 
     function loadPlaylist(id) {
-      const player = document.getElementById("aplayer-container");
+   const player = document.getElementById("aplayer-container");
 
-      // 修改为通过 Cloudflare Worker 中转
-      const workerUrl = `https://music-proxy-netease.abc123abc123.workers.dev/`;
+   // 修改为通过 Cloudflare Worker 中转
+   const workerUrl = `https://music-proxy-netease.abc123abc123.workers.dev`;
 
-      player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954" api="${workerUrl}"></meting-js>`;
-    }
+   // 确保模板字符串语法正确
+   player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954" api="${workerUrl}"></meting-js>`;
+
+   console.log("加载歌单 ID:", id);  // 确认函数是否被调用
+   }
+
 
     function loadPlaylistFromInput() {
       const id = document.getElementById("inputId").value.trim();
