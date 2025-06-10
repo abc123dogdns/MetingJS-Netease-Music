@@ -179,7 +179,7 @@
    const player = document.getElementById("aplayer-container");
 
    // 修改为通过 Cloudflare Worker 中转
-   const workerUrl = `https://music-proxy-netease.abc123abc123.workers.dev`;
+   const workerUrl = `https://neteaseproxy.autoabc.dpdns.org`;
 
    // 确保模板字符串语法正确
    player.innerHTML = `<meting-js server="netease" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954" api="${workerUrl}"></meting-js>`;
