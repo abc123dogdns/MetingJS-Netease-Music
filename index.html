@@ -176,21 +176,4 @@
     }
 
     function loadPlaylist(id) {
-      const player = document.getElementById("aplayer-container");
-      // 修改为指向 Cloudflare Worker
-      player.innerHTML = `<meting-js server="https://music-proxy-netease.abc123abc123.workers.dev" type="playlist" id="${id}" fixed="false" autoplay="false" theme="#1db954"></meting-js>`;
-    }
-
-    function loadPlaylistFromInput() {
-      const id = document.getElementById("inputId").value.trim();
-      if (id) loadPlaylist(id);
-    }
-
-    // 默认加载一次
-    window.onload = function() {
-      loadPlaylist("3778678");
-      renderCategories();
-    }
-  </script>
-</body>
-</html>
+      console.log
